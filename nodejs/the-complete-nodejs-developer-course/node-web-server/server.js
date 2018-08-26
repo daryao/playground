@@ -37,6 +37,7 @@ hbs.registerHelper('screamIt', (text) => {
 });
 
 //app.METHOD(PATH, HANDLER)
+/*
 app.get('/', (request, response) => {
   //response.send('<h1>Hello Express!</h1>')
   response.send({
@@ -45,8 +46,8 @@ app.get('/', (request, response) => {
     likes: 'Rain'
   })
 });
-
-app.get('/home', (request, response) => {
+*/
+app.get('/', (request, response) => {
   response.render('home.hbs', {
     pageTitle: 'Home Page',
     welcomeMsg: 'Welcome to the NodeJS Express site'
@@ -57,6 +58,13 @@ app.get('/about', (request, response) => {
   //response.send('About page');
   response.render('about.hbs', {
     pageTitle: 'About Page',
+  });
+});
+
+app.get('/projects', (request, response) => {
+  response.render('projects.hbs', {
+    pageTitle: 'Portfolio',
+    pageCopy: 'Portfolio page copy would be here.'
   });
 });
 
