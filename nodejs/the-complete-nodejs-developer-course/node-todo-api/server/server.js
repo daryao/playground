@@ -11,7 +11,16 @@ var app = express();
 //middleware
 app.use(bodyParser.json());
 
-//create new todo
+app.get('/todos', (req, res) => {
+  Todo.find().then((docs) => {
+    res.send({
+      docs
+    });
+  }, (e) => {
+    res.status(400).send(e);
+  })
+});
+
 app.post('/todos', (req, res) => {
   var todo = new Todo({
     text: req.body.text,
