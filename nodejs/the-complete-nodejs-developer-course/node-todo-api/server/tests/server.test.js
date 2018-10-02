@@ -10,7 +10,9 @@ var todos = [{
   text: 'First todo test'
 }, {
   _id: new ObjectID(),
-  text: 'Second todo test'
+  text: 'Second todo test',
+  completed: true,
+  completedAt: 123
 }];
 
 beforeEach((done) => {
@@ -132,5 +134,68 @@ describe('DELETE /todos/:id', () => {
     .delete(`/todos/${123}`)
     .expect(404)
     .end(done);
+  });
+})
+
+describe('PATCH /todos/:id', () => {
+  it('should update the todo', (done) => {
+    var id = todos[0]._id.toHexString();
+    var todoText = "Testing PATCH route";
+
+    request(app)
+    .patch(`/todos/${id}`)
+    .send({
+      "text": todoText,
+      "completed": true
+    })
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body.todo.text).toBe(todoText);
+      expect(res.body.todo.completed).toBe(true);
+    })
+    .end((err, res) => {
+      if (err) {
+        return done(err);
+      }
+      Todo.findById(id).then((todo) => {
+        expect(todo.text).toBe(todoText);
+        expect(todo.completed).toBe(true);
+        expect(todo.completedAt).toBeA('number');
+        expect(todo.completedAt).toBeGreaterThan(1);
+        done();
+      }).catch((e) => done(e));
+    });
+  });
+
+  it('should clear completedAt when todo is not completed', (done) => {
+    var id = todos[1]._id.toHexString();
+    var todoText = "Testing PATCH route, with completed=false";
+
+    request(app)
+    .patch(`/todos/${id}`)
+    .send({
+      "text": todoText,
+      "completed": false
+    })
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .expect((res) => {
+      expect(res.body.todo.text).toBe(todoText);
+      expect(res.body.todo.completed).toBe(false);
+    })
+    .end((err, res) => {
+      if (err) {
+        return done(err);
+      }
+      Todo.findById(id).then((todo) => {
+        expect(todo.text).toBe(todoText);
+        expect(todo.completed).toBe(false);
+        expect(todo.completedAt).toBe(null);
+        expect(todo.completedAt).toNotExist();
+        done();
+      }).catch((e) => done(e));
+    });
+
   });
 })
