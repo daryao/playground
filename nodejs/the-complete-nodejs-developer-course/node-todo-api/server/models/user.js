@@ -3,6 +3,8 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 
+const salt = 'salt123';
+
 const Schema = mongoose.Schema;
 var UserSchema = new Schema({
   username: {
@@ -50,7 +52,7 @@ var UserSchema = new Schema({
 UserSchema.methods.generateAuthToken = function () {
   var user = this;
   var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString(), access}, 'salt123').toString();
+  var token = jwt.sign({_id: user._id.toHexString(), access}, salt).toString();
   // user.tokens.push({
   //   access,
   //   token
@@ -65,6 +67,28 @@ UserSchema.methods.toJSON = function() {
     var user = this;
     var userObject = user.toObject();
     return _.pick(userObject, ['_id', 'email']);
+};
+
+//model method instead of instance method
+UserSchema.statics.findByToken = function (token) {
+  var User = this;
+  var decoded;
+
+  try {
+    decoded = jwt.verify(token, salt);
+  } catch(e) {
+    // return new Promise((resolve, reject) => {
+    //   reject();
+    // });
+    return Promise.reject();
+  }
+
+  return User.findOne({
+    _id: decoded._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  })
+
 };
 //first arg is the singular name of the collection your model is for
 //Mongoose automatically looks for the plural version of name
