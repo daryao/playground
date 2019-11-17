@@ -1,18 +1,39 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div class="container text-center">
+      <div class="row justify-content-center">
+        <div class="col-10 col-md-10 col-lg-8 col-xl-7">
+          <h4 class="display-4 text-primary mb-2">Meeting Log</h4>
+          <p class="lead">
+            This simple app creates meetings, allows people to check in, and
+            picks random users to award giveaways. Built with 
+            <a href="https://vuejs.org/">Vue.js</a>
+            and
+            <a href="https://firebase.google.com">Firebase</a>.
+          </p>
+          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <router-link
+            class="btn btn-outline-primary mr-3"
+            to="/register"
+            v-if="!user"
+          >Register</router-link>
+          <router-link
+            class="btn btn-outline-primary mr-3"
+            to="/login"
+            v-if="!user"
+          >Log In</router-link>
+          <router-link
+            class="btn btn-primary"
+            to="/meetings"
+            v-if="user"
+          >Meetings</router-link>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 
-export default {
-  name: "home",
-  components: {
-    HelloWorld
-  }
-};
 </script>
