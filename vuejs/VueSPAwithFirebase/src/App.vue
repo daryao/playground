@@ -1,14 +1,33 @@
 <template>
   <div id="app">
     <Navigation />
-    <router-view class="container" />
+    <router-view class="container" :user="user" />
   </div>
 </template>
 
 <script>
 import Navigation from "@/components/Navigation.vue";
+// import Firebase from "firebase";
+import db from "./db.js";
+
 export default {
   name: "app",
+  data: function() {
+    return {
+      user: null
+    };
+  },
+  //DOM Is Ready and Placed Inside the Page
+  //It fits the data into the template and creates the renderable element
+  //Replaces the DOM element with this new data filled element
+  mounted() {
+    db.collection("users")
+      .doc("zIseQPqzo0ZIai05DRwF")
+      .get()
+      .then(snapshot => {
+        this.user = snapshot.data().name;
+      });
+  },
   components: {
     Navigation
   }
@@ -16,9 +35,9 @@ export default {
 </script>
 
 <style lang="scss">
-
 $primary: #594b95;
-$danger: #DC1559;
+$danger: #dc1559;
+$info: #3353a5;
 $link-color: #594b95;
 $link-hover-color: #aa4b4c;
 $body-color: #2f205a;
