@@ -1,13 +1,18 @@
 <template>
   <div id="app">
     <Navigation />
-    <router-view class="container" :user="user" />
+    <router-view 
+    class="container" 
+    :user="user" 
+    @logout="logout"
+    />
   </div>
 </template>
 
 <script>
+
+import Firebase from "firebase";
 import Navigation from "@/components/Navigation.vue";
-// import Firebase from "firebase";
 import db from "./db.js";
 
 export default {
@@ -17,10 +22,25 @@ export default {
       user: null
     };
   },
+  methods: {
+    logout: function() {
+      Firebase.auth()
+      .signOut()
+      .then( () => {
+        this.user = null;
+        this.$router.push("login");
+      })
+    }
+  },
   //DOM Is Ready and Placed Inside the Page
   //It fits the data into the template and creates the renderable element
   //Replaces the DOM element with this new data filled element
   mounted() {
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.user = user.email;
+      }
+    });
     db.collection("users")
       .doc("zIseQPqzo0ZIai05DRwF")
       .get()
@@ -36,6 +56,7 @@ export default {
 
 <style lang="scss">
 $primary: #594b95;
+$secondary:  #aa4b4c;
 $danger: #dc1559;
 $info: #3353a5;
 $link-color: #594b95;

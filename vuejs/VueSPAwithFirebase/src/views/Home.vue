@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-    <div class="text-center">Welcome Back, <span class="font-weight-bold text-info">{{user}}</span></div>
+    <div class="text-center">
+      <div v-if="user" class="text-center">
+        Welcome Back
+        <span class="font-weight-bold text-info">{{user}}</span>, 
+        <a href="#" class="text-secondary" @click="$emit('logout')">log out </a>
+      </div>
+    </div>
     <div class="container text-center">
       <div class="row justify-content-center">
         <div class="col-10 col-md-10 col-lg-8 col-xl-7">

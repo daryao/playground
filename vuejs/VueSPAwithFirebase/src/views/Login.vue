@@ -47,7 +47,7 @@ export default {
             const info = {
                 email: this.email,
                 password: this.password
-            }
+            };
 
             Firebase.auth()
                 .signInWithEmailAndPassword(info.email, info.password)
@@ -57,9 +57,9 @@ export default {
                     }, error => {
                         this.error = error.message;
                     }
-                )
+                );
         }
     }
-}
+};
 
 </script>
