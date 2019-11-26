@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Shopping List</title>
+  <!-- Compressed CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.5.3/css/foundation.min.css">
+
+    <!-- Compressed JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
+</head>
+
+<body>
+    <div class="grid-container fluid">
+        <div class="grid-x grid-padding-3">
+            <div id="vue-app">
+                <h1>{{ header ? header.toLocaleUpperCase() : 'welcome'.toLocaleUpperCase() }}</h1>
+                <button v-if="state ==='default'" class="button rounded bordered shadow primary" @click="changeState('edit')">Add Item</button>
+                <button v-else class="button rounded bordered shadow secondary" @click="changeState('default')">Cancel</button>
+                <div v-if="state === 'edit'">
+                    <div class="small-3 cell">
+                            <h3>Add items</h3>
+                        </div>
+                        <div class="medium-10 cell">
+                            <input v-model="newItem" type="text" v-model="header" placeholder="Start adding..." v-on:keyup.enter="saveItem">
+                            <button class="button rounded bordered shadow primary" v-on:click="saveItem">Save Item</button>
+                        </div>
+                        <div class="margin-left-3">
+                            <ul class="list-disc">
+                                <li v-for='item in items'>&nbsp;&nbsp;{{ item }}</li>
+                            </ul>
+                        </div>
+                </div>
+                <p v-if="items.length === 0">Nothing to buy yet!</p>
+            </div>
+        </div>
+    </div>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script>
+      var shopppingList = new Vue({
+        el: '#vue-app',
+        data: {
+            state: 'default',
+            header: 'Vue.js Shopping List',
+            newItem: '',
+            items: [
+                // 'milk',
+                // 'party hats',
+                // 'sparkling water',
+            ]
+        },
+        methods: {
+            saveItem: function() {
+                this.items.push(this.newItem);
+                this.newItem = '';
+            },
+            changeState: function(newState) {
+                this.state = newState;
+                this.newItem = '';
+            }
+        }
+      });
+  </script>
+</body>
+
+</html>
