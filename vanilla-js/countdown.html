@@ -53,6 +53,10 @@ body {
   flex: 1;
   border: 0;
   padding: 2rem;
+  border-bottom: 3px solid #0d4700;
+  border-right: 1px solid rgba(0,0,0,0.2);
+  font-size: 1.5rem;
+  text-transform: uppercase;
 }
 
 .timer__button {
@@ -114,27 +118,63 @@ body {
 // javascript30 wes bos tutorial
 
 let countdown;
+const timerDisplay = document.querySelector('.display__time-left');
+const endTimeDisplay = document.querySelector('.display__end-time');
+const buttons = document.querySelectorAll('[data-time]');
 
 function timer(seconds) {
+
+  // clear existing timer
+  clearInterval(countdown);
+
     const now = Date.now(); // milliseconds
     const then = now + seconds * 1000;
     displayTimeLeft(seconds);
+    displayEndTime(then);
 
     countdown = setInterval(() => {
         const secondsLeft = Math.ceil((then - Date.now()) / 1000);
         // stop if seconds go into negative
-        if(secondsLeft < 0) {
+        if(secondsLeft <= 0) {
             clearInterval(countdown);
             return;
         }
-        
+        displayTimeLeft(secondsLeft);
     }, 1000)
-
-
 }
 
 function displayTimeLeft(seconds) {
-    const minutes = seconds / 60;
-    
+    const minutes = Math.floor(seconds / 60);
+    const remainderSeconds = seconds % 60;
+    const displayTime = `${minutes}:${remainderSeconds < 10 ? '0' : ''}${remainderSeconds}`;
+    document.title = displayTime;
+    timerDisplay.textContent = displayTime;
 }
+
+function displayEndTime(timestamp) {
+  const end = new Date(timestamp);
+  const endHour = end.getHours();
+  const endMinutes = end.getMinutes();
+  // Show end time in European clock format on first line
+  // Show US/Canada/Aus format on second line
+  endTime = `Be back at ${endHour}:${endMinutes < 10 ? '0' : ''}${endMinutes} <br> (${endHour > 12 ? endHour - 12 : endHour}:${endMinutes < 10 ? '0' : ''}${endMinutes}${endHour >= 12 ? ' PM' : ' AM'})`;
+  endTimeDisplay.innerHTML = endTime;
+}
+
+function startTimer(){
+  displayTimeLeft('');
+  displayEndTime('');
+  timer(parseInt(this.dataset.time));
+}
+
+buttons.forEach(button => button.addEventListener('click', startTimer));
+
+document.customForm.addEventListener('submit', function(event) {
+  // stop form form submitting and reloading the page
+  event.preventDefault();
+  const mins = parseInt(this.minutes.value) ? this.minutes.value : 0;
+  timer(mins * 60);
+  this.reset(0);
+});
+
 </script>
