@@ -18,7 +18,7 @@ function sym() {
         set.push(arguments[i]);
     }
 
-    // Recucer callback function where arr1 is the accumulator and arr2 is the currentValue
+    // Reducer callback function where arr1 is the accumulator and arr2 is the currentValue
     function symDiff(arr1, arr2) {
         var result = [];
 
@@ -87,3 +87,26 @@ function sym2 () {
 
 console.log(sym2([1,2,5], [2,3,5], [3,4,5]));
 console.log(sym2([1,2,3], [6,2,1,9]));
+
+
+// Version 3
+
+
+function sym3() {
+
+    // Find the difference between set A and set B, save as a Set i.e. unique values
+    // Expand set A into a list of arguments and filter the list
+    const diff = (A, B) => new Set([...A].filter(n => !B.has(n)));
+
+    // Use spread operator to convert the arguments object into an array
+    // Map the elements into a new Set
+    const result = [...arguments]
+                    .map(arr => new Set(arr))
+                    .reduce((acc, set) => new Set([...diff(acc, set), ...diff(set,acc)]));
+
+    // Convert the set to a proper array
+    return [...result];
+}
+
+console.log(sym3([1,2,5], [2,3,5], [3,4,5]));
+console.log(sym3([1,2,3], [5,2,1,4]));
