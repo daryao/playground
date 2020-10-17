@@ -89,8 +89,7 @@ console.log(sym2([1,2,5], [2,3,5], [3,4,5]));
 console.log(sym2([1,2,3], [6,2,1,9]));
 
 
-// Version 3
-
+// Version 3 using es6
 
 function sym3() {
 
