@@ -1,0 +1,35 @@
+:root {
+	--yellow-green-crayola: #ccd497ff;
+	--yellow-green-crayola-2: #b8d17eff;
+	--copper-red: #d0715eff;
+	--crimson-ua: #a83841ff;
+	--dark-jungle-green: #171e1dff;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+	monospace;
+}
+
+p {
+	color: var(--dark-jungle-green);
+	font-size: 2rem;
+}
+
+.section {
+	padding-top: 3rem;
+	text-align: center;
+}
+
+h1 {
+	color: var(--crimson-ua);
+}
+
+.storefront {
+	max-width: 350px;
+}
+
+.footer .copy {
+	color: var(--copper-red);
+	font-weight: bold;
+}

@@ -73,4 +73,48 @@ function checkCashRegister(price, payment, cashInDrawer) {
     return change_arr
 }
 
-console.log(checkCashRegister(12.20, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]));
+//console.log(checkCashRegister(12.20, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]));
+
+function checkCashRegister2(price, payment, cashInDrawer) {
+    // Denominations
+    const values = [1, 5, 10, 25, 100, 500, 1000, 2000, 10000];
+    // Multiply values by 100 to deal with the precision error
+    let change = payment * 100 - price * 100;
+
+    if (change < 0) {
+        return "Insufficient Funds";
+    }
+
+    // Keep track of whether there is money left in the register
+    let allPayment = true;
+
+    //array.reduce(callback(accumulator, currentValue[, index[, array]] )[, initialValue])
+    let moneyBack = cashInDrawer.reduceRight(function(accumulator, currentValue, index) {
+        let out = Math.min(change - change % values[index], currentValue[1] * 100)
+        change -= out;
+        if (out !== currentValue[1] * 100) {
+            allPayment = false;
+        }
+        return out ? accumulator.concat([currentValue[0], out / 100]) : accumulator;
+    }, []);
+    console.log(change);
+    console.log(allPayment);
+
+    if (!allPayment) {
+        return "Closed";
+    } else {
+        return moneyBack;
+    }
+
+    //return change > 0 ? "Insufficient Funds" : allPayment ? "Closed" : moneyBack;
+}
+
+console.log(checkCashRegister2(12.00, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]));
+
+/*
+function checkCashRegister3(price, payment, cashInDrawer) {
+    
+}
+
+console.log(checkCashRegister3(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]));
+*/
