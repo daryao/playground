@@ -1,6 +1,6 @@
 :root {
 	--yellow-green-crayola: #ccd497ff;
-	--yellow-green-crayola-2: #b8d17eff;
+	--dark-mint: #31906E;
 	--copper-red: #d0715eff;
 	--crimson-ua: #a83841ff;
 	--dark-jungle-green: #171e1dff;
@@ -28,6 +28,11 @@ h1 {
 .storefront {
 	max-width: 350px;
 }
+
+ol li::marker {
+	color: var(--dark-mint);
+	font-weight: bold;
+  }
 
 .footer .copy {
 	color: var(--copper-red);
