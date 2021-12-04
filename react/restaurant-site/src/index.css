@@ -38,3 +38,21 @@ ol li::marker {
 	color: var(--copper-red);
 	font-weight: bold;
 }
+
+button.button-primary {
+	background-color: var(--dark-mint);
+	border-color: var(--dark-mint);
+}
+button.button-primary:hover,
+button.button-primary:active,
+button.button-primary:focus {
+	background-color: var(--crimson-ua);
+	border-color: var(--crimson-ua);
+}
+
+.has-color-negative {
+	color: var(--crimson-ua);
+}
+.has-color-positive {
+	color: var(--dark-mint);
+}
