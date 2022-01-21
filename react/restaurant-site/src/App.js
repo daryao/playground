@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSmileBeam, faFrown } from '@fortawesome/free-regular-svg-icons'
+import { faSmileBeam, faDizzy, faFrown, faHandPeace } from '@fortawesome/free-regular-svg-icons'
 import './App.css';
 import storefront from './assets/storefront_illustration.png'
 
@@ -27,6 +27,11 @@ function Header({name}) {
 }
 
 function Main({menu}) {
+    const [checked, toggle] = useReducer(
+        (checked) => !checked,
+        false
+        );
+
 	return (
         <div className="section">
             <div className="container">
@@ -39,6 +44,10 @@ function Main({menu}) {
                                 <li key={item.id}>{item.title}</li>
                             ))}
                         </ol>
+                        <input type="checkbox" 
+                        value={checked} 
+                        onChange={toggle}/>&nbsp;&nbsp;
+                        <span>{checked ? "Yes, you checked the checkbox" : "Want to check the checkbox?"}</span>
                     </div>
                 </div>
             </div>
@@ -48,6 +57,16 @@ function Main({menu}) {
 
 function Footer({year}) {
     const [sentiment, setSentiment] = useState("positive");
+    const [secondary, setSecondary] = useState("confused");
+
+    // useEffect(() => {
+    //     console.log(`sentiment set to ${sentiment}`);
+    // }, [sentiment]);
+
+    // useEffect(() => {
+    //     console.log(`secondary emotion shows ${secondary}`);
+    // }, [secondary]);
+
     return (
         <div className="section footer">
             <div className="container">
@@ -55,12 +74,14 @@ function Footer({year}) {
                     <div className="column">
                         <p>Thanks for visiting!</p>
                         <div className="row">
-                            <div className="one-half column"><button className="button-primary" onClick={() => setSentiment("positive")}>I am happy!</button></div>
-                            <div class="one-half column"><button onClick={() => setSentiment("negative")}>No, I have issues with the site</button></div>
+                            <div className="one-third column"><button className="button-primary" onClick={() => {setSentiment("positive");setSecondary("fine");}}>I am happy!</button></div>
+                            <div className="one-third column"><button onClick={() => {setSentiment("negative"); setSecondary("fine");}}>No, I have issues with the site</button></div>
+                            <div className="one-third column"><button onClick={() =>  {setSentiment("negative"); setSecondary("confused");}}>I don't know, I am confused</button></div>
                         </div>
                         <br />
                         <p>Current state:&nbsp;
-                            {sentiment == "positive" ? (<FontAwesomeIcon className="has-color-positive" icon={faSmileBeam} />) : (<FontAwesomeIcon className="has-color-negative" icon={faFrown} />) }
+                            {sentiment === "positive" ? (<FontAwesomeIcon className="has-color-positive" icon={faSmileBeam} />) : (<FontAwesomeIcon className="has-color-negative" icon={faFrown} />) }&nbsp;&nbsp;
+                            {secondary === "confused" ? (<FontAwesomeIcon className="has-color-negative" icon={faDizzy} />) : (<FontAwesomeIcon className="has-color-positive" icon={faHandPeace} />) }
                         </p>
                         <div className="copy">Copyright © {year}</div>
                     </div>
