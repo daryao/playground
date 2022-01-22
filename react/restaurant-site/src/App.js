@@ -30,7 +30,7 @@ function Main({menu}) {
     const [checked, toggle] = useReducer(
         (checked) => !checked,
         false
-        );
+    );
 
 	return (
         <div className="section">
@@ -84,11 +84,54 @@ function Footer({year}) {
                             {secondary === "confused" ? (<FontAwesomeIcon className="has-color-negative" icon={faDizzy} />) : (<FontAwesomeIcon className="has-color-positive" icon={faHandPeace} />) }
                         </p>
                         <div className="copy">Copyright © {year}</div>
+                        <br />
                     </div>
                 </div>
             </div>
         </div>
     );
+}
+
+function FooterExtra({login}) {
+    const [devData, setDevdata] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if(!login) return;
+        setLoading(true);
+        fetch(`https://api.github.com/users/${login.login}`)
+        .then((response) => response.json())
+        .then(setDevdata)
+        .then(() => setLoading(false))
+        .catch(setError);
+    }, [login]);
+
+    if(loading) return <p>Loading...</p>;
+    if(error) return <pre>{JSON.stringify(error.null,2)}</pre>;
+
+    if(devData) {
+        return (
+            <div className="section footer">
+                <div className="container">
+                    <div className="row">
+                        <div className="column">
+                            <hr></hr>
+                            <div>
+                                <h4>Our web developer:</h4>
+                                <p>GitHub username: {devData.login}</p>
+                                <img src={devData.avatar_url} alt="Developer's GitHub avatar" />
+                                <p>{devData.location}</p>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    } else {
+        return null;
+    }
 }
 
 const menu = [
@@ -101,22 +144,24 @@ const menu = [
 
 const menuObjects = menu.map((item, i) => ({id: i, title : item}))
 
-function MainContent() {
+function MainContent(login) {
     return (
         <div className="App">
             <Header name="Chicken Kitchen" />
             <Main menu={menuObjects} />
             <Footer year={new Date().getFullYear()} />
+            <FooterExtra login={login} />
         </div>
       );
 }
 
-function AuthContent() {
+function AuthContent(login) {
     return (
         <div className="App">
             <Header name="Chicken Kitchen" />
             <Main menu={menuObjects} />
-            <Footer year={new Date().getFullYear()} />
+            <Footer year={new Date().getFullYear()}/>
+            <FooterExtra login={login} />
             <PromoCodes />
         </div>
       );
@@ -125,7 +170,7 @@ function AuthContent() {
 function App(props) {
     return (
         <>
-            {props.authorized ? <AuthContent /> : <MainContent />}
+            {props.authorized ? <AuthContent login={props.login}/> : <MainContent login={props.login}/>}
         </>
     );
 }

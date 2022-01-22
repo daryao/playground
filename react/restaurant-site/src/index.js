@@ -5,7 +5,7 @@ import './skeleton.css';
 import './index.css';
 import App from './App';
 
-ReactDOM.render(<App authorized={false} />,
+ReactDOM.render(<App authorized={false} login="daryao" />,
   document.getElementById('root')
 );
 

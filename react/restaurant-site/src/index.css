@@ -39,6 +39,10 @@ ol li::marker {
 	font-weight: bold;
 }
 
+.footer img {
+	max-width: 100px;
+}
+
 button.button-primary {
 	background-color: var(--dark-mint);
 	border-color: var(--dark-mint);
