@@ -59,14 +59,6 @@ function Footer({year}) {
     const [sentiment, setSentiment] = useState("positive");
     const [secondary, setSecondary] = useState("confused");
 
-    // useEffect(() => {
-    //     console.log(`sentiment set to ${sentiment}`);
-    // }, [sentiment]);
-
-    // useEffect(() => {
-    //     console.log(`secondary emotion shows ${secondary}`);
-    // }, [secondary]);
-
     return (
         <div className="section footer">
             <div className="container">
