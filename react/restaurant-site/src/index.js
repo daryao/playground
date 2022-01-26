@@ -4,12 +4,16 @@ import './normalize.css';
 import './skeleton.css';
 import './index.css';
 import App from './App';
+import {BrowserRouter as Router} from "react-router-dom";
 
-ReactDOM.render(<App authorized={false} login="daryao" />,
+ReactDOM.render(
+  <Router>
+    <App authorized={false} login="daryao" />
+  </Router>,
   document.getElementById('root')
 );
 
-/* Using Fragmnets */
+/* Using Fragments */
 
 // function AppTwo() {
 //   return <h1>Second Store</h1>

@@ -2,6 +2,16 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSmileBeam, faDizzy, faFrown, faHandPeace } from '@fortawesome/free-regular-svg-icons'
 import './App.css';
+import { Routes, Route, Link } from "react-router-dom";
+import {
+    About,
+    Events,
+    Contact,
+    Error404,
+    Services,
+    Employees,
+    Location
+} from "./pages";
 import storefront from './assets/storefront_illustration.png'
 
 // specials
@@ -140,6 +150,7 @@ function MainContent(login) {
     return (
         <div className="App">
             <Header name="Chicken Kitchen" />
+            <Nav />
             <Main menu={menuObjects} />
             <Footer year={new Date().getFullYear()} />
             <FooterExtra login={login} />
@@ -151,6 +162,7 @@ function AuthContent(login) {
     return (
         <div className="App">
             <Header name="Chicken Kitchen" />
+            <Nav />
             <Main menu={menuObjects} />
             <Footer year={new Date().getFullYear()}/>
             <FooterExtra login={login} />
@@ -159,10 +171,42 @@ function AuthContent(login) {
       );
 }
 
+function Nav() {
+    return (
+        <div className="section">
+            <div className="container">
+                <nav className="navbar">
+                    <ul className="navbar-list">
+                        <li className="navbar-item">
+                            <Link className="navbar-link" to="about">About</Link>
+                        </li>
+                        <li className="navbar-item">
+                            <Link className="navbar-link" to="events">Events</Link>
+                        </li>
+                        <li className="navbar-item">
+                            <Link className="navbar-link" to="contact">Contact</Link>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    );
+}
+
 function App(props) {
     return (
         <>
-            {props.authorized ? <AuthContent login={props.login}/> : <MainContent login={props.login}/>}
+            <Routes>
+                <Route path="/" element={props.authorized ? <AuthContent login={props.login}/> : <MainContent login={props.login}/>} />
+                <Route path="/about" element={<About />} >
+                    <Route path="services" element={<Services />} />
+                    <Route path="employees" element={<Employees />} />
+                    <Route path="location" element={<Location />} />
+                </Route>
+                <Route path="/events" element={<Events />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="*" element={<Error404 />} />
+            </Routes>
         </>
     );
 }
